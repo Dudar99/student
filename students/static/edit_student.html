@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Сервіс Обліку Студентів</title>
+  <meta name="description" value="Система Обліку Студентів Навчального Закладу" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel=”stylesheet” href=”./css/main.css”>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <h1>Форма редагування студента</h1>
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="form-group">
+                    <label>Ім'я*</label>
+                    <input type="text" class="form-control" placeholder="Іван">
+                    <label>Прізвище*</label>
+                    <input type="text" class="form-control"placeholder="Іванов">
+                    <label>По-батькові</label>
+                    <input type="text" class="form-control"placeholder="Іванович">
+                    <label>№ Студентського квитка*</label>
+                    <input type="text" class="form-control"placeholder="ВК11350161">
+                    <label>Дата народження</label>
+                    <input type="text" class="form-control" placeholder="1999-04-19">
+                    <label>Фото студента</label>
+                    <input type="file" name="pic" accept="image/*">
+                    <label>Група*</label>
+                    <div class="dropdown">
+                      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Вибір групи
+                      <span class="caret"></span></button>
+                      <ul class="dropdown-menu">
+                        <li><a href="#">ПМ-11</a></li>
+                        <li><a href="#">ПМ-12</a></li>
+                        <li><a href="#">ПМ-13</a></li>
+                      </ul>
+                    </div>
+                    <label>Примітки</label>
+                    <input type="text" class="form-control"></br>
+                    <button type="submit" class="btn btn-primary">Зберегти</button>
+
+                </div>
+        </div>
+    </div>
+</div>
+</body>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+</body>
+</html>
