@@ -17,13 +17,10 @@
         {% for i in "x"|ljust:"31" %}
             <!-- Access numeric variable (0-based index) -->
            <th> {{ forloop.counter }} </th>
-
-
         {% endfor %}
     </tr>
   </thead>
   <tbody>
-
   {% for student in students %}
     <tr>
       <td>{{ forloop.counter }}</td>
@@ -32,10 +29,8 @@
             <!-- Access numeric variable (0-based index) -->
         <td><input id="checkBox" type="checkbox"></td>
         {% endfor %}
-
     </tr>
   {% endfor %}
   </tbody>
-
 </table>
 {% endblock content %}

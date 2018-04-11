@@ -15,10 +15,15 @@
 
     <!-- Start Students Listing -->
     <table class="table table-hover table-striped">
+      {% with order_by=request.GET.order_by reverse=request.GET.reverse %}
       <thead>
         <tr>
           <th><a href="#">#</a></th>
-          <th><a href="#">Назва &uarr;</a></th>
+          <th><a href="{% url 'groups' %}?order_by=title{% if order_by == 'title' and reverse != '1' %}&amp;reverse=1{% endif %}">Назва
+          {% if order_by == 'title' and reverse != '1' %}&uarr;
+          {% elif order_by == 'title' and reverse == '1' %}&darr;
+          {% endif %}
+          </a></th>
           <th><a href="#">Староста</a></th>
           <th>Дії</th>
         </tr>
@@ -26,9 +31,9 @@
       <tbody>
       {% for group in groups %}
         <tr>
-          <td>{{ forloop.counter }}</td>
-          <td><a href="{% url 'groups_edit' group.id  %}">{{group.name}}</td>
-          <td><a href="{% url 'groups_edit' group.id %}">{{ group.teamlead.name }}</a></td>
+          <td><a href="#">{{ forloop.counter }}</a></td>
+          <td><a href="{% url 'groups_edit' group.id  %}">{{group.title}}</td>
+          <td><a href="{% url 'groups_edit' group.id %}">{{ group.leader.first_name }}</a></td>
           <td>
             <div class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle"
@@ -44,9 +49,23 @@
           </td>
         </tr>
     {% endfor %}
+
       </tbody>
     </table>
+      {% if groups.has_other_pages %}
+      <nav >
+          <ul class="pagination">
+              <li><a href="{% url 'groups'%}?page=1&amp;order_by={{order_by}}&amp;reverse={{reverse}}">&laquo;</a></li>
+          {% for page in groups.paginator.page_range %}
+          <li><a href="{% url 'groups'%}?page={{page}}&amp;order_by={{order_by}}&amp;reverse={{reverse}}">{{page}}</a></li>
+          {% endfor %}
+          <li><a href="{% url 'groups' %}?page={{groups.paginator.num_pages}}&amp;order_by={{ order_by }}&amp;reverse={{ reverse }}">&raquo;</a></li>
+          </ul>
+
+      </nav>
+      {% endif %}
     <!-- End Students Listing -->
   </div>
 </div>
+{% endwith %}
 {% endblock content %}

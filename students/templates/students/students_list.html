@@ -16,12 +16,13 @@
       <th><a href="{% url 'home' %}?order_by=last_name{% if order_by == 'last_name' and reverse != '1' %}&amp;reverse=1{% endif %}">Прізвище
           {% if order_by == 'last_name' and reverse != '1' %} &uarr;
           {% elif order_by == 'last_name' and reverse == '1' %}&darr;
+          {% elif order_by == None %}&uarr;
           {% endif %}
       </a></th>
 
       <th><a href="{% url 'home' %}?order_by=first_name{% if order_by == 'first_name' and reverse != '1' %}&amp;reverse=1{% endif %}">Ім'я
         {% if order_by == 'first_name' and reverse != '1' %}&uarr;
-        {%elif order_by == 'first_name' and reverse == '1'%}&darr;
+        {% elif order_by == 'first_name' and reverse == '1'%}&darr;
         {% endif %}
       </a></th>
       <th><a href="{% url 'home' %}?order_by=ticket{% if order_by == 'ticket' and reverse != '1' %}&amp;reverse=1{% endif %}">№ Білету
@@ -67,6 +68,23 @@
     </tr>
   {% endfor %}
   </tbody>
-{% endwith %}
 </table>
+{% if students.has_other_pages %}
+<nav>
+  <ul class="pagination" >
+      <li><a href="{% url 'home' %}?page=1&amp;order_by={{ order_by }}&amp;reverse={{ reverse }}">&laquo;</a></li>
+      {% for page in students.paginator.page_range %}
+        <li {% if students.number == page %} class="active"{% endif %}>
+            <a href="{% url 'home' %}?page={{page}}&amp;order_by={{ order_by }}&amp;reverse={{ reverse }}">{{page}}</a>
+        </li>
+      {% endfor %}
+      <li >
+          <a href="{% url 'home' %}?page={{students.paginator.num_pages}}&amp;order_by={{ order_by }}&amp;reverse={{ reverse }}">&raquo;</a>
+      </li>
+  </ul>
+</nav>
+{% endif %}
+{% endwith %}
+
+
 {% endblock content %}

@@ -3,26 +3,30 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import Http404
+from django.core.paginator import PageNotAnInteger,EmptyPage,Paginator
 
+from ..models import Group
 # Views for Groups
 def groups_list(request):
-    groups = (
-        {
-            'name': u'Пм-11',
-            'id':1,
-            'teamlead' : {'id':1,'name':'Глуховський'}
-        },
-        {
-            'name': u'ПАПА',
-            'id': 2,
-            'teamlead': {'id': 2, 'name': 'Чорненький'}
-        },
-        {
-            'name': u'ПМ22',
-            'id': 3,
-            'teamlead' : {'id':3,'name':'ДСША'}
-        },
-    )
+    groups = Group.objects.all()
+    if request.get_full_path() == "/groups/":                                      ### код який автоматично загружає сторінку з фільтром
+        # redirect request.GET on its copy(deep copy) which I will amend    ### але не міняє самої урли
+        request.GET = request.GET.copy()
+        # assign 'order_by' value 'last_name'
+        request.GET.__setitem__('order_by', 'title')
+    order_by = request.GET.get('order_by','')
+    if order_by in ('title',):
+        groups = groups.order_by(order_by)
+        if request.GET.get('reverse',''):
+            groups = groups.reverse()
+    paginator = Paginator(groups,2)
+    page = request.GET.get('page')
+    try:
+        groups = paginator.page(page)
+    except PageNotAnInteger:
+        groups = paginator.page(1)
+    except EmptyPage:
+        groups = paginator.page(paginator.num_pages)
     return render(request, 'students/groups_list.html',{'groups':groups})
 
 def groups_add(request):
