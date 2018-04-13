@@ -2,10 +2,9 @@
 from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.http import Http404
 from django.core.paginator import PageNotAnInteger,EmptyPage,Paginator
 
-from ..models import Group
+from ..models.group import Group
 # Views for Groups
 def groups_list(request):
     groups = Group.objects.all()
