@@ -2,11 +2,11 @@
 
 from __future__ import unicode_literals
 from django.shortcuts import render
-from django.http import HttpResponse
-
+from django.http import HttpResponse,HttpResponseRedirect
+from ..models.group import Group
 from ..models.student import Student
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
-
+from django.core.urlresolvers import reverse
 
 def students_list(request):
     students = Student.objects.all()
@@ -40,9 +40,53 @@ def students_list(request):
 
 
 def students_add(request):
-    return HttpResponse('<h1>Student Add Form</h1>')
+    # Якщо форма була запощена:
+    if request.method == 'POST':
+        # Якщо кнопка Скасувати була натиснута:
+             # Повертаємо користувача до списку студентів
+        # Якщо кнопка Додати була натиснута:
+        if request.POST.get('add_button') is not None:
+            errors = {}
+            if not errors:
+                student = Student(
+
+                    first_name=request.POST['first_name'],
+                    last_name=request.POST['last_name'],
+                    middle_name=request.POST['middle_name'],
+                    birthday=request.POST['birthday'],
+                    ticket=request.POST['ticket'],
+                    student_group=Group.objects.get(pk=request.POST['student_group']),
+                    photo=request.FILES["photo"]
+                )
+                student.save()
+                return HttpResponseRedirect(reverse('home'))
+            else:
+                return  render(request,'students/student_add.html',{"groups":Group.objects.all().order_by('title'),
+                                                                    "errors":errors})
+        elif request.POST.get('cancel_button') is not None:
+            return HttpResponseRedirect(reverse('home'))
+
+    else:
+        return render(request,'students/student_add.html',{"groups":Group.objects.all().order_by('title')})
+            # Перевіряємо дані на коректність та збираємо помилки
 
 
+                # Якщо дані були введені некоректно:
+
+                    # Віддаємо шаблон форми разом із знайденими помилками
+
+
+                # Якщо дані були введені коректно:
+
+                # Створюємо та зберігаємо студента в базу
+
+
+                # Повертаємо користувача до списку студентів
+
+
+    # Якщо форма не була запощена:
+
+        # повертаємо код початкового стану форми
 def students_edit(request, sid):
     return HttpResponse('<h1>Edit Student %s</h1>' % sid)
 

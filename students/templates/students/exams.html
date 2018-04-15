@@ -15,7 +15,6 @@
             <a href="{% url 'exams'%}?order_by=name{% if order_by == 'name' and reverse != '1' %}&amp;reverse=1{% endif %}">Назва
                 {% if order_by == 'name' and reverse != '1' %}&uarr;
                 {% elif order_by == 'name' and reverse == '1' %}&darr;
-
                 {% endif %}
             </a></th>
 
@@ -24,7 +23,6 @@
             <a href="{% url 'exams'%}?order_by=date{% if order_by == 'date' and reverse != '1' %}&amp;reverse=1{% endif %}">Дата
                 {% if order_by == 'date' and reverse != '1' %}&uarr;
                 {% elif order_by == 'date' and reverse == '1' %}&darr;
-
                 {% endif %}
                 </a></th>
     </tr>
