@@ -7,6 +7,8 @@ from ..models.group import Group
 from ..models.student import Student
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 from django.core.urlresolvers import reverse
+from datetime import datetime
+import os
 
 def students_list(request):
     students = Student.objects.all()
@@ -42,46 +44,73 @@ def students_list(request):
 def students_add(request):
     # Якщо форма була запощена:
     if request.method == 'POST':
-        # Якщо кнопка Скасувати була натиснута:
-             # Повертаємо користувача до списку студентів
         # Якщо кнопка Додати була натиснута:
         if request.POST.get('add_button') is not None:
             errors = {}
-            if not errors:
-                student = Student(
+            data = {"middle_name":request.POST.get("middle_name"),
+                    "notes": request.POST.get("notes")}
+            # ВАЛІДАЦІЯ ДАНИХ
+            first_name = request.POST.get("first_name", '').strip()
+            if not first_name:
+                errors["first_name"] = "Це поле мусить бути заповненим!"
+            else:
+                data["first_name"] = first_name
+            last_name = request.POST.get("last_name", "").strip()
+            if not last_name:
+                errors["last_name"] = "Це поле мусить бути запоаненим!"
+            else:
+                data["last_name"] = last_name
+            birthday= request.POST.get("birthday","").strip()
+            if not birthday:
+                errors["birthday"] = "Це поле мусить бути заповненим"
+            else :
+                try:
+                    datetime.strptime(birthday, '%Y-%m-%d')
+                except Exception:
+                    errors["birthday"] = "Введіть коректний формат дати РР-ММ-ДД"
+                else:
+                    data["birthday"]= birthday
 
-                    first_name=request.POST['first_name'],
-                    last_name=request.POST['last_name'],
-                    middle_name=request.POST['middle_name'],
-                    birthday=request.POST['birthday'],
-                    ticket=request.POST['ticket'],
-                    student_group=Group.objects.get(pk=request.POST['student_group']),
-                    photo=request.FILES["photo"]
-                )
+            ticket = request.POST.get("ticket", "").strip()
+            if not ticket:
+                errors["ticket"] = "Це поле мусить бути заповненим"
+            else:
+                data["ticket"] = ticket
+
+            student_group = request.POST.get("student_group","")
+            if not student_group:
+                errors["group"] = "Виберіть будь ласка групу"
+            else:
+                groups = Group.objects.filter(pk=student_group)
+                if len(groups)!=1:
+                    errors["group"] = "Оберіть коректну групу"
+                else:
+                    data['student_group'] = groups[0]
+            photo = request.FILES.get("photo")
+            if photo:
+                photo_extention = str(photo)
+                photo_extention = photo_extention.split('.')[1]
+                if photo_extention in ['png','jpg']:
+                    data["photo"] = photo
+                else: errors["photo"] = "Розширення фалу не підтримується"
+            if not errors:
+                student = Student(**data)
                 student.save()
                 return HttpResponseRedirect(reverse('home'))
-            else:
+            else: # Якщо дані були введені некоректно:
+                    # Віддаємо шаблон форми разом із знайденими помилками
                 return  render(request,'students/student_add.html',{"groups":Group.objects.all().order_by('title'),
-                                                                    "errors":errors})
+                                                          "errors":errors})
+        # Якщо кнопка Скасувати була натиснута:
         elif request.POST.get('cancel_button') is not None:
+            # Повертаємо користувача до списку студентів
             return HttpResponseRedirect(reverse('home'))
 
     else:
         return render(request,'students/student_add.html',{"groups":Group.objects.all().order_by('title')})
-            # Перевіряємо дані на коректність та збираємо помилки
 
 
-                # Якщо дані були введені некоректно:
 
-                    # Віддаємо шаблон форми разом із знайденими помилками
-
-
-                # Якщо дані були введені коректно:
-
-                # Створюємо та зберігаємо студента в базу
-
-
-                # Повертаємо користувача до списку студентів
 
 
     # Якщо форма не була запощена:
