@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Google App Engine SDK" type="python">
     <CLASSES>
-      <root url="file://$USER_HOME$" />
+      <root url="file://$APPLICATION_HOME_DIR$/bin" />
       <root url="file:///lib/ufw" />
       <root url="file:///lib/crda" />
       <root url="file:///lib/console-setup" />
