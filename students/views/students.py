@@ -49,6 +49,8 @@ def students_add(request):
             errors = {}
             data = {"middle_name":request.POST.get("middle_name"),
                     "notes": request.POST.get("notes")}
+
+
             # ВАЛІДАЦІЯ ДАНИХ
             first_name = request.POST.get("first_name", '').strip()
             if not first_name:
@@ -96,7 +98,8 @@ def students_add(request):
             if not errors:
                 student = Student(**data)
                 student.save()
-                return HttpResponseRedirect(reverse('home'))
+                student_name_for_status_message = data["last_name"] + ' '+ data["first_name"]
+                return HttpResponseRedirect( u'%s?status_message=Студент %s успішно доданий!'%(reverse('home'),student_name_for_status_message))
             else: # Якщо дані були введені некоректно:
                     # Віддаємо шаблон форми разом із знайденими помилками
                 return  render(request,'students/student_add.html',{"groups":Group.objects.all().order_by('title'),
@@ -104,7 +107,7 @@ def students_add(request):
         # Якщо кнопка Скасувати була натиснута:
         elif request.POST.get('cancel_button') is not None:
             # Повертаємо користувача до списку студентів
-            return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(u'%s?status_message=Додавання скасовано'%reverse('home'))
 
     else:
         return render(request,'students/student_add.html',{"groups":Group.objects.all().order_by('title')})
