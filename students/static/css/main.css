@@ -34,3 +34,12 @@ h1, h2, h3, h4, h5, h6 {
 .form-control{
 
 }
+.submit_btns{
+
+    text-align: center;
+}
+.btn-primary{
+    width: 20%;
+    height: 20%;
+    border-radius: 8px;
+}

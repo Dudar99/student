@@ -24,7 +24,8 @@ urlpatterns = patterns('',
 
     url(r'^journal/$','students.views.journal.journal_list',name='journal'),
     url(r'^exams/$', 'students.views.exams.exams_list', name='exams'),
-
+    #CONTACT-ADMIN
+    url(r'^contact-admin/$','students.views.contact_admin.contact',name='contact-admin')
 )
 if DEBUG:
 
