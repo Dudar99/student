@@ -9,5 +9,23 @@
     Зв'язок з адміністратором
 {% endblock %}
 {% block content %}
-    <h1>Тут буде форма зв'язку із адміном</h1>
+    <div class="container">
+        <form action="{% url "contact_admin" %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Надіслати" name="send_button">
+        </form>
+    </div>
+{% endblock %}
+{% block status_message %}
+    {% if form.errors %}
+        <div class="alert alert-warning" role="alert">
+            Будь-ласка, виправте наступні помилки
+        </div>
+    {% else%}
+        <div class="alert alert-success" role="alert">
+            Повідомлення надіслано
+        </div>
+    {% endif %}
+    {{ block.super }}
 {% endblock %}

@@ -46,7 +46,7 @@
                 <li role=”presentation” {% if '/exams' in request.path %}class="active"{% endif %}><a
                         href="{% url 'exams' %}">Екзамени</a></li>
                 <li role=”presentation” {% if '/contact-admin' in request.path %}class="active"{% endif %}><a
-                        href="{% url 'contact-admin' %}">Контакт</a></li>
+                        href="{% url 'contact_admin' %}">Контакт</a></li>
             </ul>
         </div>
     </div>
@@ -56,7 +56,6 @@
             <div class="alert alert-warning" role="alert">{{ request.GET.status_message }}</div>
         {% endif %}
     {% endblock %}
-
 
 
     <!-- End subheader -->

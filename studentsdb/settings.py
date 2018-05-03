@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'crispy_forms'
     'students',
 )
 
@@ -86,8 +87,21 @@ USE_TZ = True
 STATIC_URL = '/static/'
 PORTAL_URL = 'http://localhost:8000'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+LANGUAGE_CODE = 'uk'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'..','media')
+
+
+ADMIN_EMAIL = 'dudaryourko@gmail.com'
+EMAIL_HOST = 'smtp.sendgrid.com'
+EMAIL_PORT = '465'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD ='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'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
 
 from django.conf import global_settings
 
